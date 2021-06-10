@@ -86,7 +86,37 @@ class ValueIterationAgent(ValueEstimationAgent):
         to derive it on the fly.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        base = dict()
+        for s in self.mdp.getStates():
+            try:
+                base[s] = [0, self.mdp.getPossibleActions(s)[0]]
+            except:
+                base[s] = [0, 0]
+
+        for i in range(self.iterations):
+            b_old = base.copy()
+            for s in base.keys():
+                if s == state:
+                    reward = self.mdp.getReward(s, None, None)
+                    val = sum(x[1] * b_old[x[0]][0] for x in self.mdp.getTransitionStatesAndProbs(s, action))
+                    base[s] = [reward + self.discount * val, action]
+                    continue
+                try:
+                    act = self.mdp.getPossibleActions(s)[0]
+                    reward = self.mdp.getReward(s, None, None)
+                    val = sum(x[1] * b_old[x[0]][0] for x in self.mdp.getTransitionStatesAndProbs(s, act))
+
+                    for a in self.mdp.getPossibleActions(s):
+                        n_val = sum(x[1] * b_old[x[0]][0] for x in self.mdp.getTransitionStatesAndProbs(s, a))
+                        if n_val > val:
+                            val = n_val
+                            act = a
+                    base[s] = [reward + self.discount * val, act]
+                    # base[s] = [0, max(self.mdp.getReward(s, None, None) + self.discount * sum(self.mdp.getTransitionStatesAndProbs(s, a)[0] * b_old[self.mdp.getTransitionStatesAndProbs(s, a)[1]][0] for a in self.mdp.getPossibleActions(s)))]
+                except:
+                    continue
+
+        return base[state][0]
 
     def getPolicy(self, state):
         """
