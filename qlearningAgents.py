@@ -84,7 +84,12 @@ class QLearningAgent(ReinforcementAgent):
         if not legs:
             return None
         val = self.getValue(state)
-        return self.getKeysByValue(self.base, val)[0][0]
+        lst = [self.getKeysByValue(self.base, val)[x][1] for x in range(len(self.getKeysByValue(self.base, val)))]
+        n_lst = []
+        for a in lst:
+            if a in legs:
+                n_lst.append(a)
+        return random.choice(n_lst)
 
     def getAction(self, state):
         """
