@@ -109,9 +109,10 @@ class QLearningAgent(ReinforcementAgent):
         if not legalActions:
             return action
 
-        if random.random() < self.epsilon:
+        if util.flipCoin(self.epsilon):
             action = random.choice(legalActions)
         else:
+            """
             max_val = max(self.base[(state, a)] for a in legalActions)
             lst = set(self.getKeysByValue(self.base, max_val)[x][1] for x in range(len(self.getKeysByValue(self.base, max_val))))
             n_lst = []
@@ -120,9 +121,11 @@ class QLearningAgent(ReinforcementAgent):
                     n_lst.append(a)
 
             action = random.choice(n_lst)
+            """
+            action = self.getPolicy(state)
 
-        print(action)
-        print(legalActions)
+        #print(action)
+        #print(legalActions)
         return action
 
     def update(self, state, action, nextState, reward):
