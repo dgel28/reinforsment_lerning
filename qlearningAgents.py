@@ -83,6 +83,7 @@ class QLearningAgent(ReinforcementAgent):
         legs = self.getLegalActions(state)
         if not legs:
             return None
+        '''
         val = self.getValue(state)
         lst = [self.getKeysByValue(self.base, val)[x][1] for x in range(len(self.getKeysByValue(self.base, val)))]
         n_lst = []
@@ -90,6 +91,18 @@ class QLearningAgent(ReinforcementAgent):
             if a in legs:
                 n_lst.append(a)
         return random.choice(n_lst)
+        '''
+        for a in legs:
+            if (state, a) not in self.base.keys():
+                self.base[(state, a)] = 0
+        max_v = self.base[(state, legs[0])]
+        act = legs[0]
+        for a in legs:
+            if self.base[(state, a)] > max_v:
+                max_v = self.base[(state, a)]
+                act = a
+        return act
+
 
     def getAction(self, state):
         """
@@ -150,13 +163,7 @@ class QLearningAgent(ReinforcementAgent):
         self.base[(state, action)] = q
         return q
 
-    def getKeysByValue(self, dictOfElements, valueToFind):
-        listOfKeys = list()
-        listOfItems = dictOfElements.items()
-        for item in listOfItems:
-            if item[1] == valueToFind:
-                listOfKeys.append(item[0])
-        return listOfKeys
+
 
 
 class PacmanQAgent(QLearningAgent):
