@@ -38,7 +38,7 @@ def question3c():
   answerLivingReward = 0.0
   return answerDiscount, answerNoise, answerLivingReward
   # If not possible, return 'NOT POSSIBLE'
-  #bbbbb
+  #aweaweaw
   
 def question3d():
   answerDiscount = 0.9
