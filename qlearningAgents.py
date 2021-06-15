@@ -95,8 +95,8 @@ class QLearningAgent(ReinforcementAgent):
         for a in legs:
             if (state, a) not in self.base.keys():
                 self.base[(state, a)] = 0
-        max_v = self.getQValue(state, legs[0])
-        act = legs[0]
+        act = random.choice(legs)
+        max_v = self.getQValue(state, act)
         for a in legs:
             if self.getQValue(state, a) > max_v:
                 max_v = self.getQValue(state, a)
